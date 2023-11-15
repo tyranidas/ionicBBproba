@@ -1,0 +1,7 @@
+{
+  "name": "bbproba",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -8,3 +8,11 @@ import { Component } from '@angular/core';
 export class AppComponent {
   constructor() {}
 }
+
+
+
+interface Pages{
+ title:string,
+ url:string,
+ icon:string
+}

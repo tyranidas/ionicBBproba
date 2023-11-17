@@ -22,6 +22,14 @@
   </ion-item>
 
   <ion-button expand="block" (click)="certif(faces)">Lancé certifié</ion-button>
-
+  <ion-item>"Le lancé certifié lance un unique dé et fait vibrer votre téléphone afin de signaler à votre adversaire que vous avez lancé un dé."</ion-item>
 
 </ion-content>
+
+<ion-modal  (click)="displayNumber=false" [isOpen]="displayNumber">
+  <ng-template>
+    <div class='resultCertif'>
+        {{result[0]}}
+    </div>
+  </ng-template>
+</ion-modal>

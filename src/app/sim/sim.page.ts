@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Share, ShareOptions, ShareResult } from '@capacitor/share';
-
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-sim',
@@ -10,7 +10,7 @@ import { Share, ShareOptions, ShareResult } from '@capacitor/share';
 })
 export class SimPage implements OnInit {
 
-  constructor(private modalCtrl: ModalController) { }
+  constructor(private toastController: ToastController) { }
   styleButton='clear'
   action!:string;
   modalAction:boolean=false;
@@ -30,7 +30,7 @@ export class SimPage implements OnInit {
       this.action = typeAction
     }
   }
-    addDifficulte(action:String, dif:number, comp?:boolean|undefined){
+   async addDifficulte(action:String, dif:number, comp?:boolean|undefined){
       if(dif){
         let s = `${action} : ${dif}+`
         let proba = 1-(dif-1)/6
@@ -70,11 +70,27 @@ export class SimPage implements OnInit {
         // resultat temporaire ligne de calcul
         this.calculProba();
       }
-        //faire un toast erreur
+       else{
+        const toast = await this.toastController.create({
+          message: 'Merci de sélectionner un niveau de difficulté',
+          duration: 1500,
+          position: 'middle',
+        });
+        await toast.present();
+       
+       }
     }
 
-    addBlocage(blocage:Blocage, dif:number){
-      if(dif){
+     addBlocage(blocage:Blocage, dif:number){
+      console.log(blocage)
+      if(!dif){
+        this.toast('Merci de sélectionner un niveau de difficulté')
+      }
+      if(Object.keys(blocage).length===0){
+        this.toast('Merci de sélectionner au moins un dé')
+      }
+      if(!dif || Object.keys(blocage).length===0) return
+     
         let s:string = `Blocage à ${dif} dés()). Réussite sur` 
         let prob = 1;
         let dice:number = 0
@@ -119,7 +135,6 @@ export class SimPage implements OnInit {
         this.sequence.push({com: s, proba:prob})
         // resultat temporaire ligne de calcul
         this.calculProba();
-      }
    
      
     }
@@ -159,7 +174,15 @@ export class SimPage implements OnInit {
       this.result=[];
       this.proba=1;
     }
-
+    async toast(text:string, duration?:number, pos?:string){
+      const toast = await this.toastController.create({
+        message: text,
+        duration: 1500,
+        position: 'middle',
+      });
+      await toast.present();
+     
+    }
 }
 interface Joueur{
   esquive?:boolean ,

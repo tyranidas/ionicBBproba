@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Camera, CameraResultType, Photo } from '@capacitor/camera';
-import { Haptics, ImpactStyle, VibrateOptions } from '@capacitor/haptics';
+import { Haptics, VibrateOptions } from '@capacitor/haptics';
 
 @Component({
   selector: 'app-lanceur',
@@ -14,6 +13,7 @@ export class LanceurPage implements OnInit {
   public faces:number = 6;
   public nbr:number= 1;
   public result:number[] = []
+  public displayNumber:boolean=false
   ngOnInit() {
   }
   lancer(f:number, n:number){
@@ -25,9 +25,10 @@ export class LanceurPage implements OnInit {
 
   async certif (f:number)  {
     let opt! : VibrateOptions 
-    opt.duration=1000;
+    // opt.duration=1000;
     await Haptics.vibrate(opt);
     this.lancer(f,1)
+    this.displayNumber=true
   };
 
 

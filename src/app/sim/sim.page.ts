@@ -147,7 +147,8 @@ export class SimPage implements OnInit {
     if (frenesie && frenesie.dif) {
       console.log("ici")
       frenesie.frenesie = true
-      blockDice.s += ` (Frénésie : Blocage à ${frenesie.dif} dés()). Réussite sur`
+      let sJugg=this.joueurActif.jugg ? ' avec JuggerNauth' : '' ;
+      blockDice.s += ` (Frénésie ${sJugg}: Blocage à ${frenesie.dif} dés()). Réussite sur`
       let frenDice: { dice: number, s: string } = this.calculBlocDice(frenesie, blockDice.s)
       let probFren = this.calculBloc(frenesie.dif, frenDice.dice, frenesie);
       blockDice.s = frenDice.s;
@@ -166,11 +167,12 @@ export class SimPage implements OnInit {
     this.sequence.forEach(seq => {
       this.proba *= seq.proba;
     })
-
     for (let i = 0; i <= this.relance; i++) {
-      this.result[i] = ` ${i}rr : ${(this.proba * 100).toFixed(2)} % `;
+      let sRR =  this.relance >0 ? i+"rr: " : "";
+      this.result[i] = ` ${sRR} ${(this.proba * 100).toFixed(2)} % `;
     }
   }
+
   calculBloc(dif: number, dice: number, blocage: Blocage): number {
     let prob = 1;
     if (dif == 1) {
@@ -189,16 +191,10 @@ export class SimPage implements OnInit {
       prob = 1 - (6 * 6 * 6 - (dice) * (dice) * (dice)) / (6 * 6 * 6)
     }
     if (blocage.frenesie) {
-      if (this.joueurActif.jugg) {
-        prob = prob * 3 / 6;
-      }
-      else {
-        prob = prob * 2 / 6;
-      }
+      prob =  this.joueurActif.jugg ? prob = prob * 3 / 6 : prob = prob * 2 / 6;
     }
     return prob;
   }
-
   calculBlocDice(blocage: Blocage, s: string): { dice: number, s: string } {
     let dice = 0;
     if (blocage.skull) {
@@ -232,14 +228,13 @@ export class SimPage implements OnInit {
       com.push(seq.com);
     })
     Share.share({
-      text: `Pour la séquence ${[...com]} | Résultat : ${[...this.result]}`,
+      text: `Pour la séquence ${[...com]} \nRésultat : ${[...this.result]}`,
     });
   }
   supSeq(index: number) {
     console.log(index)
     this.sequence.splice(index, 1)
     this.sequence.forEach(seq => {
-      console.log(seq)
     })
 
     this.calculProba();

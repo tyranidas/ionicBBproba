@@ -24,9 +24,7 @@ export class LanceurPage implements OnInit {
   }
 
   async certif (f:number)  {
-    let opt! : VibrateOptions 
-    // opt.duration=1000;
-    await Haptics.vibrate(opt);
+    await Haptics.vibrate();
     this.lancer(f,1)
     this.displayNumber=true
   };

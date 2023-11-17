@@ -14,12 +14,13 @@
     - A faire : pouvoir changer de joueur actif
     -choisir les actions réaliser
         -Esquiver 
-        -Blocage (a faire : frénésie)
+        -Blocage 
         -Ramassage
         -Passe 
         -Foncer
         -Réception
-        -Autre Action
+        -Autre Action 
+        -A faire ajouter les rebonds D8
         -A faire :  -ajouter les passages d'armures
                     -les agressions
     -Partie Résultat

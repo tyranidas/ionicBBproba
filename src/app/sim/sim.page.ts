@@ -82,7 +82,6 @@ export class SimPage implements OnInit {
     }
   }
   addPasse(portee: number, cp: number | undefined, comp?: boolean | undefined) {
-    console.log(cp)
     if (!cp) {
       this.toast('Merci de sélectionner la capacité de passe du lanceur');
       return
@@ -142,10 +141,8 @@ export class SimPage implements OnInit {
     let s: string = `Blocage à ${dif} dés()). Réussite sur`
     let blockDice: { dice: number, s: string } = this.calculBlocDice(blocage, s)
     let prob = this.calculBloc(dif, blockDice.dice, blocage);
-   console.log(prob)
 
     if (frenesie && frenesie.dif) {
-      console.log("ici")
       frenesie.frenesie = true
       let sJugg=this.joueurActif.jugg ? ' avec JuggerNauth' : '' ;
       blockDice.s += ` (Frénésie ${sJugg}: Blocage à ${frenesie.dif} dés()). Réussite sur`
@@ -192,10 +189,11 @@ export class SimPage implements OnInit {
       prob = 1 - (6 * 6 * 6 - (dice) * (dice) * (dice)) / (6 * 6 * 6)
     }
     if (blocage.frenesie) {
-      prob =  this.joueurActif.jugg ? prob = prob * 3 / 6 : prob = prob * 2 / 6;
+      prob =  this.joueurActif.jugg ? prob = prob * 27 / 36 : prob = prob * 20 / 36;
     }
     return prob;
   }
+  
   calculBlocDice(blocage: Blocage, s: string): { dice: number, s: string } {
     let dice = 0;
     if (blocage.skull) {
@@ -233,7 +231,6 @@ export class SimPage implements OnInit {
     });
   }
   supSeq(index: number) {
-    console.log(index)
     this.sequence.splice(index, 1)
     this.sequence.forEach(seq => {
     })

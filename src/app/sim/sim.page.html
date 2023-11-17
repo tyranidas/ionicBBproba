@@ -20,19 +20,21 @@
         <ion-checkbox [(ngModel)]="joueurActif.priseSure">Prise sûr</ion-checkbox>
         <ion-checkbox [(ngModel)]="joueurActif.equilibre">Équilibre</ion-checkbox>
         <ion-checkbox [(ngModel)]="joueurActif.passe">Passe</ion-checkbox>
-        <ion-checkbox [(ngModel)]="joueurActif.bagareur">Bagareur</ion-checkbox>
+        <!-- <ion-checkbox [(ngModel)]="joueurActif.bagareur">Bagareur</ion-checkbox> -->
         <ion-checkbox [(ngModel)]="joueurActif.reception">Réception</ion-checkbox>
         <ion-checkbox [(ngModel)]="joueurActif.frenesie">Frénésie</ion-checkbox>
-        <ion-checkbox [(ngModel)]="joueurActif.pro">Pro</ion-checkbox>
+        <ion-checkbox [(ngModel)]="joueurActif.jugg">JuggerNauth</ion-checkbox>
+        <!-- <ion-checkbox [(ngModel)]="joueurActif.pro">Pro</ion-checkbox> -->
       </div>
-      <ion-item>
-        <ion-select [(ngModel)]="joueurActif.solitaire" interface="action-sheet" label="Solitaire">
+      <!-- Fonction en attente-->
+      <!-- <ion-item>
+        <ion-select   [(ngModel)]="joueurActif.solitaire" interface="action-sheet" label="Solitaire">
           <ion-select-option value="2">2+</ion-select-option>
           <ion-select-option value="3">3+</ion-select-option>
           <ion-select-option value="4">4+</ion-select-option>
           <ion-select-option value="5">5+</ion-select-option>
         </ion-select>
-      </ion-item>
+      </ion-item> -->
     </ion-card-content>
   </ion-card>
   <ion-card>
@@ -69,13 +71,14 @@
         <ion-card-header>
           <ion-card-title>{{action}}</ion-card-title>
           <ion-card-subtitle *ngIf="joueurActif.frenesie">Le joueur a Frénésie</ion-card-subtitle>
+          <ion-card-subtitle *ngIf="joueurActif.jugg">Le joueur a JuggerNauth</ion-card-subtitle>
           <ion-card-subtitle *ngIf="joueurActif.bagareur">Le joueur a Bagareur</ion-card-subtitle>
           <ion-card-subtitle *ngIf="joueurActif.pro">Le joueur a Pro</ion-card-subtitle>
           <ion-card-subtitle *ngIf="joueurActif.solitaire">Le joueur a Solitaire
             ({{joueurActif.solitaire}}+)</ion-card-subtitle>
         </ion-card-header>
         <ion-card-content>
-          <ion-select [(ngModel)]="difficulte" interface="action-sheet" label="Difficulté du Blocage">
+          <ion-select [(ngModel)]="blocage.dif" interface="action-sheet" label="Difficulté du Blocage">
             <ion-select-option value=-3>3D contre</ion-select-option>
             <ion-select-option value=-2>2D contre</ion-select-option>
             <ion-select-option value=1>1D</ion-select-option>
@@ -89,28 +92,25 @@
           </div>
           <div class="blocageBox">
             <ion-img class="xs" src="../../assets/powskull.jpg" alt="powskull"></ion-img>
-            <ion-checkbox [(ngModel)]="blocage.powskull"></ion-checkbox>
+            <ion-checkbox [disabled]="joueurActif.frenesie && joueurActif.jugg" [(ngModel)]="blocage.powskull"></ion-checkbox>
           </div>
           <div class="blocageBox">
             <ion-img class="xs" src="../../assets/push.jpg" alt="push"></ion-img>
-            <ion-checkbox [(ngModel)]="blocage.push"></ion-checkbox>
+            <ion-checkbox [disabled]="joueurActif.frenesie" [(ngModel)]="blocage.push"></ion-checkbox>
           </div>
           <div class="blocageBox">
             <ion-img class="xs" src="../../assets/bouscule.jpg" alt="bousucle"></ion-img>
-            <ion-checkbox [(ngModel)]="blocage.bouscule"></ion-checkbox>
+            <ion-checkbox  [(ngModel)]="blocage.bouscule"></ion-checkbox>
           </div>
           <div class="blocageBox">
             <ion-img class="xs" src="../../assets/pow.jpg" alt="pow"></ion-img>
             <ion-checkbox [(ngModel)]="blocage.pow"></ion-checkbox>
           </div>
-          <div class="btn-add">
-          <ion-button (click)="addBlocage(blocage, difficulte)">Ajouter</ion-button>
-          </div>
           </div>
         </ion-card-content>
-        <ion-card-content *ngIf="joueurActif.frenesie">
+        <ion-card-content *ngIf="joueurActif.frenesie ">
           <ion-label> Blocage de la frénésie</ion-label>
-          <ion-select [(ngModel)]="difficulte" interface="action-sheet" label="Difficulté du Blocage">
+          <ion-select [(ngModel)]="frenesie.dif" interface="action-sheet" label="Difficulté du Blocage">
             <ion-select-option value=-3>3D contre</ion-select-option>
             <ion-select-option value=-2>2D contre</ion-select-option>
             <ion-select-option value=1>1D</ion-select-option>
@@ -120,30 +120,33 @@
           <div class="blocageDice">
           <div class="blocageBox">
             <ion-img class="xs" src="../../assets/skull.jpg" alt="skull"></ion-img>
-            <ion-checkbox [(ngModel)]="blocage.skull"></ion-checkbox>
+            <ion-checkbox [(ngModel)]="frenesie.skull"></ion-checkbox>
           </div>
           <div class="blocageBox">
             <ion-img class="xs" src="../../assets/powskull.jpg" alt="powskull"></ion-img>
-            <ion-checkbox [(ngModel)]="blocage.powskull"></ion-checkbox>
+            <ion-checkbox [(ngModel)]="frenesie.powskull"></ion-checkbox>
           </div>
           <div class="blocageBox">
             <ion-img class="xs" src="../../assets/push.jpg" alt="push"></ion-img>
-            <ion-checkbox [(ngModel)]="blocage.push"></ion-checkbox>
+            <ion-checkbox [(ngModel)]="frenesie.push"></ion-checkbox>
           </div>
           <div class="blocageBox">
             <ion-img class="xs" src="../../assets/bouscule.jpg" alt="bousucle"></ion-img>
-            <ion-checkbox [(ngModel)]="blocage.bouscule"></ion-checkbox>
+            <ion-checkbox [(ngModel)]="frenesie.bouscule"></ion-checkbox>
           </div>
           <div class="blocageBox">
             <ion-img class="xs" src="../../assets/pow.jpg" alt="pow"></ion-img>
-            <ion-checkbox [(ngModel)]="blocage.pow"></ion-checkbox>
+            <ion-checkbox [(ngModel)]="frenesie.pow"></ion-checkbox>
           </div>
-          <div class="btn-add">
-          <ion-button (click)="addBlocage(blocage, difficulte)">Ajouter</ion-button>
-          </div>
-          </div>
+        
+       
+            </div>
         </ion-card-content>
+        <div class="btn-add">
+          <ion-button (click)="addBlocage(blocage, frenesie)">Ajouter</ion-button>
+          </div>
       </ion-card>
+    
       <!-- bouton ramassage -->
       <ion-button expand="block" (click)="displayAction('Ramassage')">Ramassage</ion-button>
       <ion-card *ngIf="action=='Ramassage'">
@@ -184,13 +187,13 @@
             <ion-select-option value=5>5+</ion-select-option>
             <ion-select-option value=6>6+</ion-select-option>
           </ion-select>
-          <ion-select [(ngModel)]="joueurActif.cp" interface="action-sheet" label="Portée de la passe">
-            <ion-select-option value=0>éclaire (0)</ion-select-option>
+          <ion-select [(ngModel)]="difficulte" interface="action-sheet" label="Portée de la passe">
+            <ion-select-option value=0>éclair (0)</ion-select-option>
             <ion-select-option value=-1>courte (-1)</ion-select-option>
             <ion-select-option value=-2>longue (-2)</ion-select-option>
             <ion-select-option value=-3>bombe(-3)</ion-select-option>
           </ion-select>
-          <ion-button class="btn-add" (click)="addDifficulte(action, difficulte, joueurActif.passe)">Ajouter</ion-button>
+          <ion-button class="btn-add" (click)="addPasse( difficulte,joueurActif.cp,  joueurActif.passe)">Ajouter</ion-button>
         </ion-card-content>
       </ion-card>
       <!-- bouton foncer -->
@@ -262,7 +265,8 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <ion-item>
+        <!-- Fonction en Attente-->
+        <!-- <ion-item>
           <ion-select (ionChange)="calculProba()" [(ngModel)]="relance" interface="action-sheet"
             label="Nombre de Relance">
             <ion-select-option value=0>0</ion-select-option>
@@ -275,22 +279,17 @@
             <ion-select-option value=7>7</ion-select-option>
             <ion-select-option value=8>8</ion-select-option>
           </ion-select>
-        </ion-item>
+        </ion-item> -->
 
         <ion-card>
           <ion-card-title>Séquence</ion-card-title>
           <ion-card-content>
-      
-  
                 <ion-item (click)="supSeq(index)" *ngFor="let seq of sequence; let index">
                   {{seq.com}}
-
                 </ion-item>
-
-    
           </ion-card-content>
-
         </ion-card>
+        
         <ion-card>
           <ion-card-title>Probabilité</ion-card-title>
           <ion-card-content>

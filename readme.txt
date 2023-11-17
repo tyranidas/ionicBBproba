@@ -16,7 +16,7 @@
         -Esquiver 
         -Blocage (a faire : frénésie)
         -Ramassage
-        -Passe (Calcul a faire)
+        -Passe 
         -Foncer
         -Réception
         -Autre Action
@@ -26,7 +26,7 @@
         -choisir le nombre de relance d'équipe disponible
         -afficher la séquence (supprimer l'action via clic)
         -afficher la probabilité de réussisent
-        - A faire :     -calcul de la proba avec les relances d'équipes
+        - A faire :     -calcul de la proba avec les relances d'équipes, solitaire et Pro
                         -lancer la simulation avec un résultat échec ou réussite
 
     Bouton reset pour supprimer toutes la séquence
@@ -34,6 +34,7 @@
 
 
     -A faire : pouvoir faire des embranchements (exemple si push ou pow)
+    -Idéalement, des components pour les actions plutot que tout mettre en vrac dans sim.page.html (utiliser des Form ?)
 
 
 

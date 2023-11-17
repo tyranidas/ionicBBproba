@@ -11,196 +11,275 @@ import { ToastController } from '@ionic/angular';
 export class SimPage implements OnInit {
 
   constructor(private toastController: ToastController) { }
-  styleButton='clear'
-  action!:string;
-  modalAction:boolean=false;
-  joueurActif : Joueur = {};
-  relance:number=0;
-  difficulte!:number;
-  sequence:any[]=[];
+  styleButton = 'clear'
+  action!: string;
+  modalAction: boolean = false;
+  joueurActif: Joueur = { frenesie: false, jugg: false };
+  relance: number = 0;
+  difficulte!: number;
+  sequence: any[] = [];
   blocage: Blocage = {};
-  result:string[]=[];
-  proba:number = 1
+  frenesie: Blocage = {};
+  result: string[] = [];
+  proba: number = 1
   ngOnInit() {
   }
 
-  async displayAction(typeAction:string){
-    if (this.action== typeAction) this.action=""
+  async displayAction(typeAction: string) {
+    if (this.action == typeAction) this.action = ""
     else {
       this.action = typeAction
     }
   }
-   async addDifficulte(action:String, dif:number, comp?:boolean|undefined){
-      if(dif){
-        let s = `${action} : ${dif}+`
-        let proba = 1-(dif-1)/6
-        if(comp){
-          switch(action){
-            case "Esquive" : 
+  async addDifficulte(action: String, dif: number, comp?: boolean | undefined) {
+    if (dif) {
+      let s = `${action} : ${dif}+`
+      let proba = 1 - (dif - 1) / 6
+      if (comp) {
+        switch (action) {
+          case "Esquive":
             s += " (avec Esquive)";
-            proba += (1-proba)*proba
-  
-  
+            proba += (1 - proba) * proba
+
+
             break;
-            case "Ramassage" : 
+          case "Ramassage":
             s += " (avec Prise sûre)";
-            proba += (1-proba)*proba
-  
+            proba += (1 - proba) * proba
+
             break;
-            case "Réception" : 
+          case "Réception":
             s += " (avec Réception)";
-            proba += (1-proba)*proba
-  
+            proba += (1 - proba) * proba
+
             break;
-            case "Passe" : 
+          case "Passe":
             s += " (avec Passe)";
-            proba += (1-proba)*proba
-  
+            proba += (1 - proba) * proba
+
             break;
-            case "Foncer" : 
+          case "Foncer":
             s += " (avec Équilibre)";
-            proba += (1-proba)*proba
+            proba += (1 - proba) * proba
             break;
-            default : break;
-          }
-        
+          default: break;
         }
-      
-        this.sequence.push({com: s, proba:proba})
-        // resultat temporaire ligne de calcul
-        this.calculProba();
+
       }
-       else{
-        const toast = await this.toastController.create({
-          message: 'Merci de sélectionner un niveau de difficulté',
-          duration: 1500,
-          position: 'middle',
-        });
-        await toast.present();
-       
-       }
-    }
 
-     addBlocage(blocage:Blocage, dif:number){
-      console.log(blocage)
-      if(!dif){
-        this.toast('Merci de sélectionner un niveau de difficulté')
-      }
-      if(Object.keys(blocage).length===0){
-        this.toast('Merci de sélectionner au moins un dé')
-      }
-      if(!dif || Object.keys(blocage).length===0) return
-     
-        let s:string = `Blocage à ${dif} dés()). Réussite sur` 
-        let prob = 1;
-        let dice:number = 0
-        if (blocage.skull) {
-          s += " crâne,";
-          dice ++
-        }
-        if (blocage.powskull) {
-          s += " Les 2 au sol,";
-          dice++}
-        if (blocage.push) {
-          s += " Flèche,";
-        dice += 2}
-        if (blocage.bouscule) {
-          s += " Bousculé,";
-          dice++}
-        if (blocage.pow) {s += " Flash";{
-          dice++
-        }}
-
-        switch(dif){
-          case 1:
-            prob =  1-(6-dice)/6;
-            break;
-          case 2:
-            prob =  1-(6-dice)*(6-dice)/6*6;
-            break;
-          case 3:
-            prob =  1-(6-dice)*(6-dice)*(6-dice)/6*6*6;
-            break;
-          case -2:
-            prob = 1-(6*6-(dice)*(dice))/6*6
-            break;
-          case -3:
-            prob =   1-(6*6*6-(dice)*(dice)*(dice))/6*6*6
-            break;
-        }
-      
-        
-
-
-        this.sequence.push({com: s, proba:prob})
-        // resultat temporaire ligne de calcul
-        this.calculProba();
-   
-     
-    }
-
-    calculProba(){
-      this.proba=1;
-      this.sequence.forEach(seq =>{
-        this.proba *= seq.proba; 
-      })
-      
-      for (let i =0;i <= this.relance;i++){
-        this.result[i] = ` ${i}rr : ${(this.proba*100).toFixed(2)} % `;
-      }
-    }
-
-    export(){
-      let com:string[] =[]
-      this.sequence.forEach(seq=>{
-        com.push(seq.com);
-      })
-      Share.share({
-        text: `Pour la séquence ${[...com]} | Résultat : ${[...this.result]}`,
-      });
-    }
-    supSeq(index:number){
-      console.log(index)
-      this.sequence.splice(index,1)
-      this.sequence.forEach(seq=>{
-        console.log(seq)
-      })
-     
+      this.sequence.push({ com: s, proba: proba })
+      // resultat temporaire ligne de calcul
       this.calculProba();
-     
     }
-    clear(){
-      this.sequence=[];
-      this.result=[];
-      this.proba=1;
-    }
-    async toast(text:string, duration?:number, pos?:string){
+    else {
       const toast = await this.toastController.create({
-        message: text,
+        message: 'Merci de sélectionner un niveau de difficulté',
         duration: 1500,
         position: 'middle',
       });
       await toast.present();
-     
+
     }
+  }
+  addPasse(portee: number, cp: number | undefined, comp?: boolean | undefined) {
+    console.log(cp)
+    if (!cp) {
+      this.toast('Merci de sélectionner la capacité de passe du lanceur');
+      return
+    }
+    if (!portee) {
+      this.toast('Merci de sélectionner la portée');
+      return
+    }
+    let porteString: string = ""
+    switch (portee) {
+      case 0:
+        porteString = "éclair"
+        break;
+      case -1:
+        porteString = "courte"
+        break;
+      case -2:
+        porteString = "longue"
+        break;
+      case -3:
+        porteString = "bombe"
+        break;
+      default: break;
+    }
+    let dif: number = cp - portee;
+    let s = `Passe ${porteString} : ${dif}+`;
+    let proba = 1 - (dif - 1) / 6;
+    if (comp) {
+      proba += (1 - proba) * proba
+      s += " (avec Passe)";
+    }
+    if (cp > 1) {
+      if (portee > -3 || cp == 3) {
+        proba += (cp - 2) / 6 * 0.0469 + (cp - 2) / 6 * 0.469 / 8
+      }
+      else {
+        proba += 1 / 6 * 0.0469 + 1 / 6 * 0.469 / 8
+      }
+    }
+    this.sequence.push({ com: s, proba: proba });
+    this.calculProba();
+
+
+  }
+  addBlocage(blocage: Blocage, frenesie?: Blocage) {
+    let dif!: number
+    if (blocage.dif) dif = blocage.dif;
+    if (!dif) {
+      this.toast('Merci de sélectionner un niveau de difficulté')
+      return
+    }
+    if (Object.keys(blocage).length === 0) {
+      this.toast('Merci de sélectionner au moins un dé')
+      return
+    }
+
+    let s: string = `Blocage à ${dif} dés()). Réussite sur`
+    let blockDice: { dice: number, s: string } = this.calculBlocDice(blocage, s)
+    let prob = this.calculBloc(dif, blockDice.dice, blocage);
+   console.log(prob)
+
+    if (frenesie && frenesie.dif) {
+      console.log("ici")
+      frenesie.frenesie = true
+      blockDice.s += ` (Frénésie : Blocage à ${frenesie.dif} dés()). Réussite sur`
+      let frenDice: { dice: number, s: string } = this.calculBlocDice(frenesie, blockDice.s)
+      let probFren = this.calculBloc(frenesie.dif, frenDice.dice, frenesie);
+      blockDice.s = frenDice.s;
+      prob += probFren;
+    }
+    
+    this.sequence.push({ com: blockDice.s, proba: prob })
+    // resultat temporaire ligne de calcul
+    this.calculProba();
+
+
+  }
+
+  calculProba() {
+    this.proba = 1;
+    this.sequence.forEach(seq => {
+      this.proba *= seq.proba;
+    })
+
+    for (let i = 0; i <= this.relance; i++) {
+      this.result[i] = ` ${i}rr : ${(this.proba * 100).toFixed(2)} % `;
+    }
+  }
+  calculBloc(dif: number, dice: number, blocage: Blocage): number {
+    let prob = 1;
+    if (dif == 1) {
+      prob = 1 - (6 - dice) / 6;
+    }
+    if (dif == 2) {
+      prob = 1 - (6 - dice) * (6 - dice) / (6 * 6);
+    }
+    if (dif == 3) {
+      prob = 1 - (6 - dice) * (6 - dice) * (6 - dice) / (6 * 6 * 6);
+    }
+    if (dif == -2) {
+      prob = 1 - (6 * 6 - (dice) * (dice)) / (6 * 6)
+    }
+    if (dif == -3) {
+      prob = 1 - (6 * 6 * 6 - (dice) * (dice) * (dice)) / (6 * 6 * 6)
+    }
+    if (blocage.frenesie) {
+      if (this.joueurActif.jugg) {
+        prob = prob * 3 / 6;
+      }
+      else {
+        prob = prob * 2 / 6;
+      }
+    }
+    return prob;
+  }
+
+  calculBlocDice(blocage: Blocage, s: string): { dice: number, s: string } {
+    let dice = 0;
+    if (blocage.skull) {
+      s += " crâne,";
+      dice++
+    }
+    if (blocage.powskull) {
+      s += " Les 2 au sol,";
+      dice++
+    }
+    if (blocage.push) {
+      s += " Flèche,";
+      dice += 2
+    }
+    if (blocage.bouscule) {
+      s += " Bousculé,";
+      dice++
+    }
+    if (blocage.pow) {
+      s += " Flash"; {
+        dice++
+      }
+    }
+ 
+    let blocDice = { dice: dice, s: s }
+    return blocDice;
+  }
+  export() {
+    let com: string[] = []
+    this.sequence.forEach(seq => {
+      com.push(seq.com);
+    })
+    Share.share({
+      text: `Pour la séquence ${[...com]} | Résultat : ${[...this.result]}`,
+    });
+  }
+  supSeq(index: number) {
+    console.log(index)
+    this.sequence.splice(index, 1)
+    this.sequence.forEach(seq => {
+      console.log(seq)
+    })
+
+    this.calculProba();
+
+  }
+  clear() {
+    this.sequence = [];
+    this.result = [];
+    this.proba = 1;
+  }
+  async toast(text: string, duration?: number, pos?: string) {
+    const toast = await this.toastController.create({
+      message: text,
+      duration: 1500,
+      position: 'middle',
+    });
+    await toast.present();
+
+  }
 }
-interface Joueur{
-  esquive?:boolean ,
-  priseSure?:boolean ,
-  equilibre?:boolean ,
-  reception?:boolean ,
-  pro?:boolean 
-  frenesie?:boolean ,
-  passe?:boolean 
-  bagareur?:boolean ,
-  solitaire?:number ,
-  cp?:number
+interface Joueur {
+  esquive?: boolean,
+  priseSure?: boolean,
+  equilibre?: boolean,
+  reception?: boolean,
+  pro?: boolean
+  frenesie: boolean,
+  jugg: boolean,
+  passe?: boolean
+  bagareur?: boolean,
+  solitaire?: number,
+  cp?: number
 }
 
-interface Blocage{
-  skull?:boolean,
-  powskull?:boolean,
-  push?:boolean,
-  bouscule?:boolean,
-  pow?:boolean     
+interface Blocage {
+  skull?: boolean,
+  powskull?: boolean,
+  push?: boolean,
+  bouscule?: boolean,
+  pow?: boolean,
+  frenesie?: boolean,
+  dif?: number
 }

@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { Camera, CameraResultType } from '@capacitor/camera';
-
 
 
 @Component({

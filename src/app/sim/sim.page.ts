@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { Share, ShareOptions, ShareResult } from '@capacitor/share';
+import { Share } from '@capacitor/share';
 import { ToastController } from '@ionic/angular';
 
 @Component({
@@ -193,7 +192,7 @@ export class SimPage implements OnInit {
     }
     return prob;
   }
-  
+
   calculBlocDice(blocage: Blocage, s: string): { dice: number, s: string } {
     let dice = 0;
     if (blocage.skull) {

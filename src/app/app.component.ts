@@ -1,12 +1,22 @@
 import { Component } from '@angular/core';
+import { Camera, CameraResultType } from '@capacitor/camera';
+
+
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
+
+
 })
 export class AppComponent {
   constructor() {}
+  public appPages:Pages[] =  [
+    { title: 'Accueil', url: '/home', icon: 'home-outline' },
+    { title: 'Simulateur', url: '/sim', icon: 'calculator-outline' },
+    { title: 'Lanceur', url: '/lanceur', icon: 'dice-outline' }
+  ];
 }
 
 

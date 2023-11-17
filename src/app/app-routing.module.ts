@@ -11,6 +11,14 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'sim',
+    loadChildren: () => import('./sim/sim.module').then( m => m.SimPageModule)
+  },
+  {
+    path: 'lanceur',
+    loadChildren: () => import('./lanceur/lanceur.module').then( m => m.LanceurPageModule)
+  },
 ];
 
 @NgModule({

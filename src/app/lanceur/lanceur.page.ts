@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Camera, CameraResultType, Photo } from '@capacitor/camera';
-import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { Haptics, ImpactStyle, VibrateOptions } from '@capacitor/haptics';
 
 @Component({
   selector: 'app-lanceur',
@@ -23,9 +23,11 @@ export class LanceurPage implements OnInit {
     }
   }
 
-  async certif (f:number, n:number)  {
-    await Haptics.vibrate();
-    this.lancer(f,n)
+  async certif (f:number)  {
+    let opt! : VibrateOptions 
+    opt.duration=1000;
+    await Haptics.vibrate(opt);
+    this.lancer(f,1)
   };
 
 

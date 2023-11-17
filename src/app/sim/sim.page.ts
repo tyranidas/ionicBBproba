@@ -35,28 +35,28 @@ export class SimPage implements OnInit {
     if (dif) {
       let s = `${action} : ${dif}+`
       let proba = 1 - (dif - 1) / 6
+      let rrAuto:boolean=false
       if (comp) {
         switch (action) {
           case "Esquive":
             s += " (avec Esquive)";
             proba += (1 - proba) * proba
-
-
+            rrAuto=true;
             break;
           case "Ramassage":
             s += " (avec Prise sûre)";
             proba += (1 - proba) * proba
-
+            rrAuto=true;
             break;
           case "Réception":
             s += " (avec Réception)";
             proba += (1 - proba) * proba
-
+            rrAuto=true;
             break;
           case "Passe":
             s += " (avec Passe)";
             proba += (1 - proba) * proba
-
+            rrAuto=true;
             break;
           case "Foncer":
             s += " (avec Équilibre)";
@@ -67,7 +67,7 @@ export class SimPage implements OnInit {
 
       }
 
-      this.sequence.push({ com: s, proba: proba })
+      this.sequence.push({ com: s, proba: proba, rrAuto: rrAuto })
       // resultat temporaire ligne de calcul
       this.calculProba();
     }
@@ -167,6 +167,7 @@ export class SimPage implements OnInit {
     this.sequence.forEach(seq => {
       this.proba *= seq.proba;
     })
+    // this.result[0]= `0rr : ${(this.proba * 100).toFixed(2)} %`;
     for (let i = 0; i <= this.relance; i++) {
       let sRR =  this.relance >0 ? i+"rr: " : "";
       this.result[i] = ` ${sRR} ${(this.proba * 100).toFixed(2)} % `;
